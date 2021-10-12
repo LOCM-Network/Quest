@@ -1,0 +1,28 @@
+---
+diemdanh:
+  chitieu: []
+  items:
+    - "1:0:10:30"
+    - "2:0:10:30"
+  commands:
+    - "lol"
+    - "lol"
+online:
+  chitieu: []
+  items:
+    - "1:0:10:30"
+    - "2:0:10:30"
+  commands:
+    - "lol"
+    - "lol"
+break:
+  chitieu: 
+    - "1:0:10:30:40"
+    - "2:0:10:30:40"
+  items:
+    - "1:0:10:30"
+    - "2:0:10:30"
+  commands:
+    - "lol"
+    - "lol"
+...
