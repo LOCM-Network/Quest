@@ -1,7 +1,0 @@
-name: Quest
-main: me.labalityowo.Quest
-version: 1.0
-api: ["1.0.13"]
-load: POSTWORLD
-author: labalityowo
-description: Quest
