@@ -48,7 +48,16 @@ public class QuestForm {
                 name = name.replace("{type}", "Điểm danh");
             }else if(s.equals("online")){
                 name = name.replace("{type}", "Hoạt động");
+            }else if(s.equals("kiemxu")){
+                name = name.replace("{type}", "Kiếm xu");
+            }else if(s.equals("tieuxu")){
+                name = name.replace("{type}", "Tiêu xu");
+            }else if(s.equals("tieulcoin")){
+                name = name.replace("{type}", "Tiêu Lcoin");
+            }else if(s.equals("naplcoin")){
+                name = name.replace("{type}", "Nạp Lcoin");
             }
+
             Button button = new Button(name, (player1, button1) -> sendQuestForm(player, s, questData, session));
             form.addButton(button);
         });
@@ -69,8 +78,15 @@ public class QuestForm {
             description = description.replace("{type}", "Điểm danh");
         }else if(id.equals("online")){
             description = description.replace("{type}", "Hoạt động");
+        }else if(id.equals("kiemxu")){
+            description = description.replace("{type}", "Kiếm xu");
+        }else if(id.equals("tieuxu")){
+            description = description.replace("{type}", "Tiêu xu");
+        }else if(id.equals("tieulcoin")){
+            description = description.replace("{type}", "Tiêu Lcoin");
+        }else if(id.equals("naplcoin")){
+            description = description.replace("{type}", "Nạp Lcoin");
         }
-
 
         int progressBars = (int) (30 * questData.getPercent());
         description += "\nProgress: " + Strings.repeat("" + "&a|", progressBars) + Strings.repeat("" + "&c|", 30 - progressBars);

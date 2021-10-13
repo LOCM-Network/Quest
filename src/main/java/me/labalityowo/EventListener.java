@@ -1,6 +1,7 @@
 package me.labalityowo;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.block.Block;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
@@ -19,8 +20,9 @@ import me.labalityowo.quests.QuestSession;
 import me.labalityowo.quests.type.BreakQuest;
 import me.labalityowo.quests.type.CraftQuest;
 import me.labalityowo.quests.type.PlaceQuest;
+import me.onebone.economyapi.event.money.AddMoneyEvent;
+import me.onebone.economyapi.event.money.ReduceMoneyEvent;
 
-import javax.xml.crypto.Data;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -85,7 +87,12 @@ public class EventListener implements Listener {
     public void onProgress(ProgressUpdateEvent event){
         Player player = event.getSession().getPlayer();
         QuestData questData = event.getQuestData();
-        int progressBars = (int) (30 * event.getQuestData().getPercent());
+        int progressBars;
+        if(questData.isCompleted()){
+            progressBars = 30;
+        }else{
+            progressBars = (int) (30 * event.getQuestData().getPercent());
+        }
         String popup = "{type}: " + Strings.repeat("" + "&a|", progressBars) + Strings.repeat("" + "&c|", 30 - progressBars);
 
         if(questData instanceof BreakQuest){
@@ -98,6 +105,14 @@ public class EventListener implements Listener {
             popup = popup.replace("{type}", "Điểm danh");
         }else if(event.getId().equals("online")){
             popup = popup.replace("{type}", "Hoạt động");
+        }else if(event.getId().equals("kiemxu")){
+            popup = popup.replace("{type}", "Kiếm xu");
+        }else if(event.getId().equals("tieuxu")){
+            popup = popup.replace("{type}", "Tiêu xu");
+        }else if(event.getId().equals("tieulcoin")){
+            popup = popup.replace("{type}", "Tiêu Lcoin");
+        }else if(event.getId().equals("naplcoin")){
+            popup = popup.replace("{type}", "Nạp Lcoin");
         }
 
         player.sendPopup(TextFormat.colorize(popup));
@@ -119,6 +134,14 @@ public class EventListener implements Listener {
             title = title.replace("{type}", "điểm danh");
         }else if(event.getId().equals("online")){
             title = title.replace("{type}", "hoạt động");
+        }else if(event.getId().equals("kiemxu")){
+            title = title.replace("{type}", "kiếm xu");
+        }else if(event.getId().equals("tieuxu")){
+            title = title.replace("{type}", "tiêu xu");
+        }else if(event.getId().equals("tieulcoin")){
+            title = title.replace("{type}", "tiêu Lcoin");
+        }else if(event.getId().equals("naplcoin")){
+            title = title.replace("{type}", "nạp Lcoin");
         }
 
         player.sendTitle(title);
@@ -175,4 +198,57 @@ public class EventListener implements Listener {
             craftQuest1.setProgress(craftQuest1.getProgress() + 1, session, "craft1");
         }
     }
+
+    @EventHandler
+    public void onMoneyReduce(ReduceMoneyEvent event){
+        if(event.isCancelled()) return;
+        Player player = Server.getInstance().getPlayer(event.getPlayer());
+        QuestSession session = Quest.getInstance().getSession(player.getUniqueId().toString());
+        if(!session.isCompletedRequirements()) return;
+        QuestData questData = session.getQuest("tieuxu");
+        if(!questData.isCompleted()){
+            questData.setProgress(questData.getProgress() + (int) Math.round(event.getAmount()), session, "tieuxu");
+        }
+    }
+
+    @EventHandler
+    public void onMoneyAdded(AddMoneyEvent event){
+        if(event.isCancelled()) return;
+        Player player = Server.getInstance().getPlayerExact(event.getPlayer());
+        System.out.println(player.getUniqueId().toString());
+        QuestSession session = Quest.getInstance().getSession(player.getUniqueId().toString());
+        if(!session.isCompletedRequirements()) return;
+        QuestData questData = session.getQuest("kiemxu");
+        if(!questData.isCompleted()){
+            questData.setProgress(questData.getProgress() + (int) Math.round(event.getAmount()), session, "kiemxu");
+        }
+    }
+
+    /*
+
+    @EventHandler
+    public void onLcoinReduce(me.locm.economyapi.event.money.ReduceMoneyEvent event){
+        if(event.isCancelled()) return;
+        Player player = Server.getInstance().getPlayer(event.getPlayer());
+        QuestSession session = Quest.getInstance().getSession(player.getUniqueId().toString());
+        if(!session.isCompletedRequirements()) return;
+        QuestData questData = session.getQuest("tieulcoin");
+        if(!questData.isCompleted()){
+            questData.setProgress(questData.getProgress() + (int) Math.round(event.getAmount()), session, "tieulcoin");
+        }
+    }
+
+    @EventHandler
+    public void onLcoinAdded(me.locm.economyapi.event.money.AddMoneyEvent event){
+        if(event.isCancelled()) return;
+        Player player = Server.getInstance().getPlayer(event.getPlayer());
+        QuestSession session = Quest.getInstance().getSession(player.getUniqueId().toString());
+        if(!session.isCompletedRequirements()) return;
+        QuestData questData = session.getQuest("naplcoin");
+        if(!questData.isCompleted()){
+            questData.setProgress(questData.getProgress() + (int) Math.round(event.getAmount()), session, "naplcoin");
+        }
+    }
+
+     */
 }
