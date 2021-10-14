@@ -34,6 +34,7 @@ public class Quest extends PluginBase{
     @Override
     public void onEnable() {
         instance = this;
+        getDataFolder().mkdir();
         Database.initialize();
         ConfigManager.initialize();
         Database.execute("CREATE TABLE IF NOT EXISTS questData (uuid TEXT, questType TEXT, questExtraInformation TEXT, progress INTEGER, maxProgress INTEGER, rewardsClaimed INTEGER)");
