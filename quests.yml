@@ -25,4 +25,24 @@ break:
   commands:
     - "lol"
     - "lol"
+tieuxu:
+  chitieu:
+    - "0:0:10:30:40"
+    - "0:0:10:30:40"
+  items:
+    - "1:0:10:30"
+    - "2:0:10:30"
+  commands:
+    - "lol"
+    - "lol"
+kiemxu:
+  chitieu:
+    - "0:0:10:30:40"
+    - "0:0:10:30:40"
+  items:
+    - "1:0:10:30"
+    - "2:0:10:30"
+  commands:
+    - "lol"
+    - "lol"
 ...

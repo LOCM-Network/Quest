@@ -43,6 +43,7 @@ public class Quest extends PluginBase{
         getServer().getScheduler().scheduleRepeatingTask(new QuestResetTask(), 1728000);
         getServer().getScheduler().scheduleRepeatingTask(new OnlineQuestTask(), 1200);
         getServer().getCommandMap().register("quest", new QuestCommand());
+
     }
 
 
@@ -94,7 +95,7 @@ public class Quest extends PluginBase{
     public void addOrUpdateSession(Player player, Date date){
         String uuid = player.getUniqueId().toString();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        Database.execute("DELETE FROM questData WHERE uuid='" + uuid + "'");
+        Database.execute("DELETE FROM questClaimedLog WHERE uuid='" + uuid + "'");
         Database.execute("INSERT INTO questClaimedLog(uuid, date) VALUES('" + uuid + "', '" + format.format(date) +"')");
         HashMap<String, QuestData> dataMap = new HashMap<String, QuestData>();
         configsMap.forEach((id, questConfig) -> {

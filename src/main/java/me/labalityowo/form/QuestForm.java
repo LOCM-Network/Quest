@@ -30,11 +30,8 @@ public class QuestForm {
             questMaps = session.getQuestMap();
         }else{
             questMaps = new HashMap<String, QuestData>();
-            session.getQuestMap().forEach((s, questData) -> {
-                if(s.equals("diemdanh") || s.equals("online")){
-                    questMaps.put(s, questData);
-                }
-            });
+            questMaps.put("online", session.getQuest("online"));
+            questMaps.put("diemdanh", session.getQuest("diemdanh"));
         }
         questMaps.forEach((s, questData) -> {
             String name = "{type}\n" + (questData.isCompleted() ? "Xong" : "Chưa xong");

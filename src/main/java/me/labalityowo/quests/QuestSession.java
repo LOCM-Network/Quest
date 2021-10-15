@@ -28,7 +28,6 @@ public class QuestSession {
     }
 
     public boolean isCompletedRequirements(){
-        //return (questMap.get("diemdanh").isCompleted() && questMap.get("online").isCompleted());
-        return true;
+        return (questMap.get("diemdanh").isCompleted() && questMap.get("online").isCompleted());
     }
 }
