@@ -23,18 +23,18 @@ public class QuestForm {
 
     public static void sendMain(Player player){
         SimpleForm form = new SimpleForm();
-        form.setTitle("Quest");
+        form.setTitle("§a§lＬＯＣＭ §6ＱＵＥＳＴ");
         QuestSession session = Quest.getInstance().getSession(player.getUniqueId().toString());
         HashMap<String, QuestData> questMaps;
         if(session.isCompletedRequirements()){
             questMaps = session.getQuestMap();
         }else{
-            questMaps = new HashMap<String, QuestData>();
+            questMaps = new HashMap<>();
             questMaps.put("online", session.getQuest("online"));
             questMaps.put("diemdanh", session.getQuest("diemdanh"));
         }
         questMaps.forEach((s, questData) -> {
-            String name = "{type}\n" + (questData.isCompleted() ? "Xong" : "Chưa xong");
+            String name = "§l§f•§0 {type} §f•\n" + (questData.isCompleted() ? "§l§aĐã Hoàn Thành" : "§l§cChưa Hoàn Thành");
             if(questData instanceof BreakQuest){
                 name = name.replace("{type}", "Đào khoáng sản");
             }else if(questData instanceof PlaceQuest){
@@ -63,8 +63,8 @@ public class QuestForm {
 
     public static void sendQuestForm(Player player, String id, QuestData questData, QuestSession session){
         SimpleForm form = new SimpleForm();
-        form.setTitle("Quest");
-        String description = "Description: {type}";
+        form.setTitle("§a§lＬＯＣＭ §6ＱＵＥＳＴ");
+        String description = "&l&f⋗&l&c Nhiệm Vụ: &e: {type}\n";
         if(questData instanceof BreakQuest){
             description = description.replace("{type}", "Đào " + questData.getMaxProgress() + " " + ((BreakQuest) questData).getBlock().getName());
         }else if(questData instanceof PlaceQuest){
@@ -76,17 +76,26 @@ public class QuestForm {
         }else if(id.equals("online")){
             description = description.replace("{type}", "Hoạt động");
         }else if(id.equals("kiemxu")){
-            description = description.replace("{type}", "Kiếm xu");
+            description = description.replace("{type}", "Kiếm " + questData.getMaxProgress() + " xu");
         }else if(id.equals("tieuxu")){
-            description = description.replace("{type}", "Tiêu xu");
+            description = description.replace("{type}", "Tiêu " + questData.getMaxProgress() + " xu");
         }else if(id.equals("tieulcoin")){
-            description = description.replace("{type}", "Tiêu Lcoin");
+            description = description.replace("{type}", "Tiêu " + questData.getMaxProgress() + " Lcoin");
         }else if(id.equals("naplcoin")){
-            description = description.replace("{type}", "Nạp Lcoin");
+            description = description.replace("{type}", "Nạp "+ questData.getMaxProgress() + " Lcoin");
         }
 
-        int progressBars = (int) (30 * questData.getPercent());
-        description += "\nProgress: " + Strings.repeat("" + "&a|", progressBars) + Strings.repeat("" + "&c|", 30 - progressBars);
+        description += "&l&f⋗&l&c Tiến Độ: &e" + questData.getProgress() + "&f/&e" + questData.getMaxProgress() + "\n";
+
+        int progressBars;
+
+        if(questData.getMaxProgress() == 1){
+            progressBars = 0;
+        }else{
+            progressBars = (int) (30 * questData.getPercent());
+        }
+
+        description += Strings.repeat("" + "&a|", progressBars) + Strings.repeat("" + "&c|", 30 - progressBars);
         form.setContent(TextFormat.colorize(description));
         form.setNoneHandler(player1 -> sendMain(player));
 
@@ -94,18 +103,18 @@ public class QuestForm {
             Button button = new Button("Claim", (player1, button1) -> {
                 questData.setRewardCollected(true);
                 QuestConfig config = Quest.getInstance().getQuestConfig(id);
-                ArrayList<Item> items = new ArrayList<Item>(config.getItems().keySet());
+                ArrayList<Item> items = new ArrayList<>(config.getItems().keySet());
                 Item selectedItem = items.get((int)(Math.random() * items.size()));
                 ArrayList<Integer> randomList = config.getItems().get(selectedItem);
                 selectedItem.setCount((int) (Math.random() * (randomList.get(1) - randomList.get(0))) + randomList.get(0));
                 if(!player.getInventory().canAddItem(selectedItem)){
-                    player.sendMessage("Full");
+                    player.sendMessage("§l§cKho đã đầy!");
                     return;
                 }
                 player.getInventory().addItem(selectedItem);
                 String command = config.getCommands().get((int)(Math.random() * config.getCommands().size()));
                 Server.getInstance().dispatchCommand(new ConsoleCommandSender(), command.replace("{player}", player.getName()));
-                player.sendMessage("da nhan qua");
+                player.sendMessage("§l§aBạn đã nhận quà");
             });
             form.addButton(button);
         }
@@ -113,7 +122,7 @@ public class QuestForm {
         if(id.equals("diemdanh") && !questData.isCompleted()){
             Button button = new Button("Complete", (player1, button1) -> {
                 questData.setProgress(1, session, id);
-                player.sendMessage("ban da diem danh");
+                player.sendMessage("§l§aBạn đã điểm danh");
             });
             form.addButton(button);
         }

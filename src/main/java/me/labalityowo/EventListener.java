@@ -106,13 +106,13 @@ public class EventListener implements Listener {
         }else if(event.getId().equals("online")){
             popup = popup.replace("{type}", "Hoạt động");
         }else if(event.getId().equals("kiemxu")){
-            popup = popup.replace("{type}", "Kiếm xu");
+            popup = popup.replace("{type}", "Kiếm " + questData.getMaxProgress() + " xu");
         }else if(event.getId().equals("tieuxu")){
-            popup = popup.replace("{type}", "Tiêu xu");
+            popup = popup.replace("{type}", "Tiêu " + questData.getMaxProgress() + " xu");
         }else if(event.getId().equals("tieulcoin")){
-            popup = popup.replace("{type}", "Tiêu Lcoin");
+            popup = popup.replace("{type}", "Tiêu " + questData.getMaxProgress() + " Lcoin");
         }else if(event.getId().equals("naplcoin")){
-            popup = popup.replace("{type}", "Nạp Lcoin");
+            popup = popup.replace("{type}", "Nạp "+ questData.getMaxProgress() + " Lcoin");
         }
 
         player.sendPopup(TextFormat.colorize(popup));
@@ -122,7 +122,7 @@ public class EventListener implements Listener {
     public void onComplete(QuestCompletedEvent event){
         Player player = event.getSession().getPlayer();
         QuestData questData = event.getQuestData();
-        String title = "Bạn đã làm xong nhiệm vụ {type}";
+        String title = "§l§aBạn đã hoàn thành nhiệm vụ §e{type}";
 
         if(questData instanceof BreakQuest){
             title = title.replace("{type}", "đào " + questData.getMaxProgress() + " " + ((BreakQuest) questData).getBlock().getName());
@@ -135,13 +135,13 @@ public class EventListener implements Listener {
         }else if(event.getId().equals("online")){
             title = title.replace("{type}", "hoạt động");
         }else if(event.getId().equals("kiemxu")){
-            title = title.replace("{type}", "kiếm xu");
+            title = title.replace("{type}", "Kiếm " + questData.getMaxProgress() + " xu");
         }else if(event.getId().equals("tieuxu")){
-            title = title.replace("{type}", "tiêu xu");
+            title = title.replace("{type}", "Tiêu " + questData.getMaxProgress() + " xu");
         }else if(event.getId().equals("tieulcoin")){
-            title = title.replace("{type}", "tiêu Lcoin");
+            title = title.replace("{type}", "Tiêu " + questData.getMaxProgress() + " Lcoin");
         }else if(event.getId().equals("naplcoin")){
-            title = title.replace("{type}", "nạp Lcoin");
+            title = title.replace("{type}", "Nạp "+ questData.getMaxProgress() + " Lcoin");
         }
 
         player.sendTitle(title);
